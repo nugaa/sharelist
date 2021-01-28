@@ -1,16 +1,16 @@
 import 'package:afazeres/models/tarefas_data.dart';
-import 'package:afazeres/ui/tarefas_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AddTarefa extends StatefulWidget {
+  AddTarefa(this.idDaLista);
+  final String idDaLista;
   @override
   _AddTarefaState createState() => _AddTarefaState();
 }
 
 class _AddTarefaState extends State<AddTarefa> {
   String novaTarefa;
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -68,7 +68,7 @@ class _AddTarefaState extends State<AddTarefa> {
                     ? null
                     : () {
                         Provider.of<TarefasData>(context, listen: false)
-                            .adicionarTarefa(novaTarefa);
+                            .adicionarTarefa(novaTarefa, widget.idDaLista);
                         Navigator.pop(context);
                       },
               ),

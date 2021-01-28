@@ -1,3 +1,4 @@
+import 'package:afazeres/ui/postit_layout.dart';
 import 'package:afazeres/ui/tarefas_layout.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         initialRoute: '/',
         routes: {
-          '/': (context) => TarefasLayout(),
+          '/': (context) => PostIt_Layout(),
+          '/first': (context) => TarefasLayout(),
         },
       ),
     );

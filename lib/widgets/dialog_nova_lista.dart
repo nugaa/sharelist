@@ -1,11 +1,13 @@
-import 'package:afazeres/models/tarefas_data.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/rendering.dart';
 
-mostrarDialogNovaLista(BuildContext context) {
-  String novaListaNome;
+import 'colorWidgetPicker.dart';
+
+mostrarDialogNovaLista(BuildContext ctx) {
+  String nomeLista;
+
   return showDialog(
-      context: context,
+      context: ctx,
       builder: (context) {
         return Material(
           type: MaterialType.transparency,
@@ -37,7 +39,7 @@ mostrarDialogNovaLista(BuildContext context) {
                     ),
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height / 3,
+                    height: MediaQuery.of(context).size.height / 4,
                     width: MediaQuery.of(context).size.width / 1.5,
                     decoration: BoxDecoration(
                         color: Colors.white,
@@ -47,38 +49,47 @@ mostrarDialogNovaLista(BuildContext context) {
                         )),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          TextField(
-                            textAlign: TextAlign.center,
-                            decoration: InputDecoration(
-                                labelText: 'Nome da lista...',
-                                labelStyle: TextStyle(
-                                  fontSize: 18.0,
-                                )),
-                            onChanged: (value) {
-                              novaListaNome = value;
-                            },
-                          ),
-                          RaisedButton(
-                            elevation: 15.0,
-                            color: Colors.lightBlueAccent,
-                            onPressed: () {
-                              Provider.of<TarefasData>(context, listen: false)
-                                  .novaLista(novaListaNome);
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              'Adicionar',
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                color: Colors.white,
-                              ),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            TextField(
+                              textAlign: TextAlign.center,
+                              decoration: InputDecoration(
+                                  labelText: 'Nome da lista',
+                                  labelStyle: TextStyle(
+                                    fontSize: 18.0,
+                                  )),
+                              onChanged: (value) {
+                                nomeLista = value;
+                              },
                             ),
-                          ),
-                        ],
+                            SizedBox(
+                              height: 10.0,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Cor da lista',
+                                  style: TextStyle(
+                                    color: Colors.black54,
+                                    fontSize: 18.0,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                                mostrarCoresPicker(context, nomeLista),
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

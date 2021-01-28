@@ -1,13 +1,15 @@
 import 'package:afazeres/models/tarefas_data.dart';
+import 'package:afazeres/servicos/firebase_firestore_servico.dart';
 import 'package:afazeres/ui/add_tarefa.dart';
 import 'package:afazeres/widgets/dialog_remover_lista.dart';
 import 'package:afazeres/widgets/meu_bottombar.dart';
-import 'package:afazeres/widgets/task_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class TarefasLayout extends StatelessWidget {
   Widget build(BuildContext context) {
+    final String nomePassado =
+        ModalRoute.of(context).settings.arguments as String;
     return Scaffold(
       backgroundColor: Colors.lightBlueAccent,
       floatingActionButton: FloatingActionButton(
@@ -25,7 +27,7 @@ class TarefasLayout extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.only(
                     bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: AddTarefa(),
+                child: AddTarefa(nomePassado),
               ),
             ),
           );
@@ -55,29 +57,17 @@ class TarefasLayout extends StatelessWidget {
                         size: 45.0,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16.0),
-                      child: Text(
-                        Provider.of<TarefasData>(context).nomeLista.isEmpty
-                            ? 'Nenhuma lista selecionada'
-                            : Provider.of<TarefasData>(context).nomeLista,
-                        style: TextStyle(
-                          fontSize: 30.0,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                    SizedBox(
+                      height: 35.0,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          '${Provider.of<TarefasData>(context).tarefasCont} tarefas',
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.white,
-                          ),
-                        ),
+                        Padding(
+                            padding: const EdgeInsets.only(top: 16.0),
+                            //TODO: FUTUREBUILDER AQUI
+                            child: Provider.of<TarefasData>(context)
+                                .nomeDaLista(nomePassado)),
                         Padding(
                           padding: const EdgeInsets.only(right: 24.0),
                           child: IconButton(
@@ -87,12 +77,14 @@ class TarefasLayout extends StatelessWidget {
                               color: Colors.white,
                             ),
                             onPressed: () {
-                              //TODO: acho que não está a funcionar direito
                               mostrarDialogRemoverLista(context);
                             },
                           ),
                         )
                       ],
+                    ),
+                    SizedBox(
+                      height: 5.0,
                     ),
                   ],
                 ),
@@ -107,7 +99,8 @@ class TarefasLayout extends StatelessWidget {
                     topRight: Radius.circular(25.0),
                   ),
                 ),
-                child: TaskList(),
+                child: FirebaseFirestoreServico()
+                    .streamBuilderTarefas(nomePassado),
               ),
             ),
           ],

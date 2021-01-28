@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Meu_BottomBar extends StatelessWidget {
-  List mlista = [];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,7 +28,7 @@ class Meu_BottomBar extends StatelessWidget {
               ),
               onPressed: () async {
                 Provider.of<TarefasData>(context, listen: false)
-                    .minhasListas(context, true);
+                    .idDaLista('teste');
               },
             ),
             SizedBox(

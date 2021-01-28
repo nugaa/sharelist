@@ -58,7 +58,7 @@ mostrarDialogListas(BuildContext context, List lista, bool isDimissible) async {
                                 onTap: () {
                                   Provider.of<TarefasData>(context,
                                           listen: false)
-                                      .mudarLista(lista[index]);
+                                      .idDaLista(lista[index]);
                                   Navigator.pop(context);
                                 },
                                 child: Text(

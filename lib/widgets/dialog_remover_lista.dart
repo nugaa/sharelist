@@ -1,5 +1,4 @@
 import 'package:afazeres/models/tarefas_data.dart';
-import 'package:afazeres/widgets/dialog_listas.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
