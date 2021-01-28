@@ -31,10 +31,12 @@ class PostItInfoWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  nomeDaLista,
-                  style: TextStyle(
-                    fontSize: 40.0,
+                Center(
+                  child: Text(
+                    nomeDaLista,
+                    style: TextStyle(
+                      fontSize: 20.0,
+                    ),
                   ),
                 ),
               ],

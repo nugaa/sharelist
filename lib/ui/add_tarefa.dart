@@ -1,5 +1,6 @@
 import 'package:afazeres/models/tarefas_data.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class AddTarefa extends StatefulWidget {
@@ -40,38 +41,27 @@ class _AddTarefaState extends State<AddTarefa> {
             ),
             TextField(
               autofocus: true,
+              textInputAction: TextInputAction.done,
               textAlign: TextAlign.center,
               decoration: InputDecoration(
                 hintText: 'Insira aqui...',
               ),
-              onChanged: (texto) {
+              // onChanged: (texto) {
+              //   novaTarefa = texto;
+              // },
+              onSubmitted: (texto) {
                 novaTarefa = texto;
+                if (novaTarefa != null ||
+                    novaTarefa != "" ||
+                    novaTarefa.trim().length > 2) {
+                  Provider.of<TarefasData>(context, listen: false)
+                      .adicionarTarefa(novaTarefa, widget.idDaLista);
+                  Navigator.pop(context);
+                }
               },
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: RaisedButton(
-                color: Colors.lightBlueAccent,
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Text(
-                    'Adicionar',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                    ),
-                  ),
-                ),
-                onPressed: novaTarefa == null ||
-                        novaTarefa == "" ||
-                        novaTarefa.trim().length < 2
-                    ? null
-                    : () {
-                        Provider.of<TarefasData>(context, listen: false)
-                            .adicionarTarefa(novaTarefa, widget.idDaLista);
-                        Navigator.pop(context);
-                      },
-              ),
+            SizedBox(
+              height: 20.0,
             )
           ],
         ),

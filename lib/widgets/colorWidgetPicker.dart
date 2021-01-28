@@ -59,7 +59,6 @@ InkWell corCA(BuildContext ctx, Color cor, String nome) => InkWell(
         if (nome != null && nome.length >= 3) {
           Provider.of<TarefasData>(ctx, listen: false)
               .novaLista(nome, cor.toString());
-          print(nome);
           Navigator.of(ctx).popAndPushNamed('/first', arguments: nome);
         } else {
           Flushbar(

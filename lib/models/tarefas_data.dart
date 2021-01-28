@@ -27,9 +27,7 @@ class TarefasData extends ChangeNotifier {
 
   novaLista(String nomeDaLista, String cor) async {
     List allLists = [];
-    print(cor);
     allLists = await FirebaseFirestoreServico().obterMinhasListas();
-    print(allLists.length);
 
     int cont = allLists.length + 1;
 
@@ -65,9 +63,7 @@ class TarefasData extends ChangeNotifier {
   }
 
   void adicionarTarefa(String novaTarefa, String idDaLista) {
-    FirebaseFirestoreServico()
-        .adicionarTarefa(idDaLista, novaTarefa)
-        .then((value) => print('Tarefa adicionada'));
+    FirebaseFirestoreServico().adicionarTarefa(idDaLista, novaTarefa);
   }
 
   void removerTarefa(Tarefas tarefa) {

@@ -26,9 +26,8 @@ class Meu_BottomBar extends StatelessWidget {
                 size: 30.0,
                 color: Colors.white70,
               ),
-              onPressed: () async {
-                Provider.of<TarefasData>(context, listen: false)
-                    .idDaLista('teste');
+              onPressed: () {
+                Navigator.of(context).popAndPushNamed('/');
               },
             ),
             SizedBox(
@@ -63,7 +62,7 @@ class Meu_BottomBar extends StatelessWidget {
                 color: Colors.white70,
               ),
               onPressed: () async {
-                print('Partilhar minha lista');
+                //TODO: partilhar lista
               },
             ),
           ],

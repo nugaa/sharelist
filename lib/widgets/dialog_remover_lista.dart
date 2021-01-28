@@ -64,7 +64,7 @@ mostrarDialogRemoverLista(BuildContext context) {
                             onPressed: () {
                               Provider.of<TarefasData>(context, listen: false)
                                   .removerLista();
-                              Navigator.pop(context);
+                              Navigator.pop(context, true);
                             },
                             child: Text(
                               'Sim',

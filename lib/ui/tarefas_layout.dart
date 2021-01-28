@@ -64,10 +64,19 @@ class TarefasLayout extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
-                            padding: const EdgeInsets.only(top: 16.0),
-                            //TODO: FUTUREBUILDER AQUI
-                            child: Provider.of<TarefasData>(context)
-                                .nomeDaLista(nomePassado)),
+                          padding: const EdgeInsets.only(top: 16.0),
+                          child: nomePassado.length > 2
+                              ? Text(
+                                  nomePassado,
+                                  style: TextStyle(
+                                    fontSize: 30.0,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
+                              : Provider.of<TarefasData>(context)
+                                  .nomeDaLista(nomePassado),
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(right: 24.0),
                           child: IconButton(
@@ -76,8 +85,12 @@ class TarefasLayout extends StatelessWidget {
                               Icons.delete_forever,
                               color: Colors.white,
                             ),
-                            onPressed: () {
-                              mostrarDialogRemoverLista(context);
+                            onPressed: () async {
+                              bool result =
+                                  await mostrarDialogRemoverLista(context);
+                              if (result == true) {
+                                Navigator.pop(context);
+                              }
                             },
                           ),
                         )

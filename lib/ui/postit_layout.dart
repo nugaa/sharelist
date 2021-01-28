@@ -1,8 +1,6 @@
-import 'package:afazeres/models/tarefas_data.dart';
 import 'package:afazeres/servicos/firebase_firestore_servico.dart';
 import 'package:afazeres/widgets/dialog_nova_lista.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class PostIt_Layout extends StatefulWidget {
   @override
@@ -24,7 +22,7 @@ class _PostIt_LayoutState extends State<PostIt_Layout> {
           await mostrarDialogNovaLista(context);
         },
       ),
-      backgroundColor: Colors.blueAccent,
+      backgroundColor: Colors.lightBlueAccent,
       body: SafeArea(
         child: FirebaseFirestoreServico().streamNomeLista(),
       ),

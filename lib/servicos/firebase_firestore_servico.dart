@@ -44,7 +44,11 @@ class FirebaseFirestoreServico {
   Future obterNomeLista(String idDoc) async {
     final dados = await _listas.doc(idDoc).get();
     String nomeLista = dados.data()['nome'];
-    return nomeLista;
+    if (nomeLista != null && nomeLista != '') {
+      return nomeLista;
+    } else {
+      return idDoc;
+    }
   }
 
   StreamBuilder streamNomeLista() {
@@ -52,13 +56,12 @@ class FirebaseFirestoreServico {
         stream: _listas.snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            print('nada');
             return Center(
                 child: Text(
               'Não existem listas a apresentar...',
               style: TextStyle(
-                fontSize: 30.0,
-                color: Colors.redAccent,
+                fontSize: 18.0,
+                color: Colors.black54,
               ),
             ));
           }
@@ -178,6 +181,7 @@ class FirebaseFirestoreServico {
     final documentos =
         await _listas.where('nome', isEqualTo: nomeDaLista).get();
     for (var dados in documentos.docs) {
+      _listas.doc(dados.id).collection('items').doc().delete();
       _listas.doc(dados.id).delete().then((value) => print('Lista apagada'));
     }
   }
@@ -189,7 +193,6 @@ class FirebaseFirestoreServico {
         .where('itemLista', isEqualTo: nomeItem)
         .get();
     for (var docID in documentos.docs) {
-      print(docID.id);
       _listas.doc(idDoc).collection('items').doc(docID.id).delete();
     }
   }
