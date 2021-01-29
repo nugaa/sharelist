@@ -22,7 +22,7 @@ class _PostIt_LayoutState extends State<PostIt_Layout> {
           await mostrarDialogNovaLista(context);
         },
       ),
-      backgroundColor: Colors.lightBlueAccent,
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: FirebaseFirestoreServico().streamNomeLista(),
       ),
