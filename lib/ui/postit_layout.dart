@@ -13,7 +13,7 @@ class PostIt_Layout extends StatefulWidget {
 
 class _PostIt_LayoutState extends State<PostIt_Layout> {
   StreamSubscription _conexaoAlteradaStream;
-  bool isOff = false;
+  bool isOff = true;
   @override
   void initState() {
     super.initState();
