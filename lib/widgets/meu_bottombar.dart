@@ -25,7 +25,7 @@ class Meu_BottomBar extends StatelessWidget {
                 color: Colors.white70,
               ),
               onPressed: () {
-                Navigator.of(context).popAndPushNamed('/');
+                Navigator.of(context).pop();
               },
             ),
             SizedBox(

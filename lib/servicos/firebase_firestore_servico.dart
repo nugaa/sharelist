@@ -58,7 +58,7 @@ class FirebaseFirestoreServico {
           if (!snapshot.hasData) {
             return Center(
                 child: Text(
-              'Não existem listas a apresentar...',
+              'A procurar listas...',
               style: TextStyle(
                 fontSize: 18.0,
                 color: Colors.black54,

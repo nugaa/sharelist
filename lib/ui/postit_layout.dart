@@ -1,5 +1,9 @@
+import 'dart:async';
+
+import 'package:afazeres/servicos/conexao_bloc.dart';
 import 'package:afazeres/servicos/firebase_firestore_servico.dart';
 import 'package:afazeres/widgets/dialog_nova_lista.dart';
+import 'package:afazeres/widgets/mostrarAvisoWidget.dart';
 import 'package:flutter/material.dart';
 
 class PostIt_Layout extends StatefulWidget {
@@ -8,6 +12,28 @@ class PostIt_Layout extends StatefulWidget {
 }
 
 class _PostIt_LayoutState extends State<PostIt_Layout> {
+  StreamSubscription _conexaoAlteradaStream;
+  bool isOff = false;
+  @override
+  void initState() {
+    super.initState();
+    Conexao_Bloc conexaoStatus = Conexao_Bloc.getInstance();
+    _conexaoAlteradaStream =
+        conexaoStatus.conexaoStream.listen(conexaoAlterada);
+  }
+
+  void conexaoAlterada(dynamic temConexao) {
+    setState(() {
+      isOff = !temConexao;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _conexaoAlteradaStream.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,9 +48,11 @@ class _PostIt_LayoutState extends State<PostIt_Layout> {
           await mostrarDialogNovaLista(context);
         },
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blueGrey[300],
       body: SafeArea(
-        child: FirebaseFirestoreServico().streamNomeLista(),
+        child: isOff == false
+            ? FirebaseFirestoreServico().streamNomeLista()
+            : SafeArea(child: waitConnWidget(context)),
       ),
     );
   }
