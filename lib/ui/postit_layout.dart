@@ -44,9 +44,11 @@ class _PostIt_LayoutState extends State<PostIt_Layout> {
           size: 30.0,
           color: Colors.white,
         ),
-        onPressed: () async {
-          await mostrarDialogNovaLista(context);
-        },
+        onPressed: isOff == false
+            ? () async {
+                await mostrarDialogNovaLista(context);
+              }
+            : null,
       ),
       backgroundColor: Colors.blueGrey[300],
       body: SafeArea(
