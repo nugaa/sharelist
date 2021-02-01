@@ -1,6 +1,7 @@
 import 'package:afazeres/models/postit_info.dart';
 import 'package:afazeres/models/tarefas_data.dart';
 import 'package:afazeres/widgets/list_checkbox_tile.dart';
+import 'package:afazeres/widgets/waitNoticeWidget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -12,7 +13,7 @@ class FirebaseFirestoreServico {
 
   Future<List> obterMinhasListas() async {
     List minhasListas = [];
-    final dados = await _firestore.collection('Listas').get();
+    final dados = await _listas.get();
     for (var nomeLista in dados.docs) {
       minhasListas.add({nomeLista.get('nome'), nomeLista.get('cor')});
     }
@@ -20,12 +21,12 @@ class FirebaseFirestoreServico {
   }
 
   Future<String> obterIdLista(String nomeDaLista) async {
-    String idCol;
+    String idLista;
     final dados = await _listas.where('nome', isEqualTo: nomeDaLista).get();
     for (var colecaoID in dados.docs) {
-      idCol = colecaoID.id;
+      idLista = colecaoID.id;
     }
-    return idCol;
+    return idLista;
   }
 
   Future<String> obterIdItem(String idDoc, String nomeItem) async {
@@ -46,8 +47,6 @@ class FirebaseFirestoreServico {
     String nomeLista = dados.data()['nome'];
     if (nomeLista != null && nomeLista != '') {
       return nomeLista;
-    } else {
-      return idDoc;
     }
   }
 
@@ -56,14 +55,7 @@ class FirebaseFirestoreServico {
         stream: _listas.snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(
-                child: Text(
-              'A procurar listas...',
-              style: TextStyle(
-                fontSize: 18.0,
-                color: Colors.black54,
-              ),
-            ));
+            return waitNoticeWidget(context, 'A carregar listas...');
           }
           final nomeDaLista = snapshot.data.docs;
           List<Widget> widgetListaNomes = [];
@@ -100,7 +92,7 @@ class FirebaseFirestoreServico {
       stream: _listas.doc(idDoc).collection('items').snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return Center(child: Text('A lista está vazia.'));
+          return waitNoticeWidget(context, 'A carregar items...');
         }
         final itemsDaLista = snapshot.data.docs;
         List<Text> itemsWidgets = [];
@@ -163,11 +155,15 @@ class FirebaseFirestoreServico {
 
   Future adicionarTarefa(String idDaLista, String itemLista) async {
     bool isChecked = false;
-    _listas
-        .doc(idDaLista)
-        .collection('items')
-        .add({'itemLista': itemLista, 'isChecked': isChecked}).then(
-            (value) => print('Item adicionado'));
+    print(idDaLista);
+    final documento = await _listas.where('nome', isEqualTo: idDaLista).get();
+    for (var doc in documento.docs) {
+      _listas
+          .doc(doc.id)
+          .collection('items')
+          .add({'itemLista': itemLista, 'isChecked': isChecked}).then(
+              (value) => print('Item adicionado'));
+    }
   }
 
   Future novaLista(String nomeDaLista, int id, String corDaLista) async {
@@ -178,12 +174,12 @@ class FirebaseFirestoreServico {
   }
 
   Future removerLista(String nomeDaLista) async {
-    final documentos =
-        await _listas.where('nome', isEqualTo: nomeDaLista).get();
-    for (var dados in documentos.docs) {
-      _listas.doc(dados.id).collection('items').doc().delete();
-      _listas.doc(dados.id).delete().then((value) => print('Lista apagada'));
-    }
+    _listas.doc(nomeDaLista).collection('items').get().then((snapshot) {
+      for (DocumentSnapshot doc in snapshot.docs) {
+        doc.reference.delete();
+      }
+    });
+    _listas.doc(nomeDaLista).delete().then((value) => print('Lista apagada'));
   }
 
   Future removerItemDaLista(String idDoc, String nomeItem) async {

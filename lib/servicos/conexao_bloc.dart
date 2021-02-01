@@ -9,12 +9,9 @@ class Conexao_Bloc {
   Conexao_Bloc._internal();
 
   static Conexao_Bloc getInstance() => _instance;
-
   final Connectivity _conexao = Connectivity();
   bool conBool = false;
-
   final conexaoStreamController = new StreamController.broadcast();
-
   Stream get conexaoStream => conexaoStreamController.stream;
 
   Future<bool> updateConexaoStatus(ConnectivityResult result) async {

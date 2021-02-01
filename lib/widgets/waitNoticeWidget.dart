@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget waitConnWidget(BuildContext context) {
+Widget waitNoticeWidget(BuildContext context, String aviso) {
   return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
     Center(
       child: Container(
@@ -18,7 +18,7 @@ Widget waitConnWidget(BuildContext context) {
               SizedBox(height: 15.0),
               Center(
                 child: Text(
-                  'A aguardar ligação à internet...',
+                  aviso,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 18.0,

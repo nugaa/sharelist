@@ -1,7 +1,5 @@
-import 'package:afazeres/models/tarefas_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:provider/provider.dart';
 
 class PostItInfo {
   staggeredTilesAdd() => StaggeredTile.count(1, 1);
@@ -22,9 +20,10 @@ class PostItInfoWidget extends StatelessWidget {
       color: backgroundColor,
       child: InkWell(
         onTap: () async {
-          String passar = await Provider.of<TarefasData>(context, listen: false)
-              .idDaLista(nomeDaLista);
-          Navigator.of(context).pushNamed('/first', arguments: passar);
+          // String passar = await Provider.of<TarefasData>(context, listen: false)
+          //     .idDaLista(nomeDaLista);
+          Navigator.of(context).pushNamed('/first',
+              arguments: {'nome': nomeDaLista, 'cor': backgroundColor});
         },
         child: Padding(
             padding: const EdgeInsets.only(left: 8.0, top: 3.0),

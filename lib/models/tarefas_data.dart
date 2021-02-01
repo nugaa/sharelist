@@ -36,12 +36,19 @@ class TarefasData extends ChangeNotifier {
         .then((value) => print('Lista Adicionada'));
   }
 
-  nomeDaLista(String idDoc) {
+  nomeDaListaWidget(String idDoc) {
     return FutureBuilder(
         future: FirebaseFirestoreServico().obterNomeLista(idDoc),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Text('Ocorreu um erro', style: TextStyle(fontSize: 20.0));
+            return Text(
+              idDoc,
+              style: TextStyle(
+                fontSize: 30.0,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            );
           }
           var texto = snapshot.data;
           return Text(
@@ -55,10 +62,8 @@ class TarefasData extends ChangeNotifier {
         });
   }
 
-  void removerLista() async {
+  void removerLista(String nomeLista) async {
     FirebaseFirestoreServico().removerLista(nomeLista);
-    nomeLista = '';
-    mlista = await FirebaseFirestoreServico().obterMinhasListas();
     notifyListeners();
   }
 

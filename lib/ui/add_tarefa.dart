@@ -12,6 +12,8 @@ class AddTarefa extends StatefulWidget {
 
 class _AddTarefaState extends State<AddTarefa> {
   String novaTarefa;
+  String id;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -46,16 +48,16 @@ class _AddTarefaState extends State<AddTarefa> {
               decoration: InputDecoration(
                 hintText: 'Insira aqui...',
               ),
-              // onChanged: (texto) {
-              //   novaTarefa = texto;
-              // },
-              onSubmitted: (texto) {
+              onSubmitted: (texto) async {
                 novaTarefa = texto;
                 if (novaTarefa != null ||
                     novaTarefa != "" ||
                     novaTarefa.trim().length > 2) {
-                  Provider.of<TarefasData>(context, listen: false)
-                      .adicionarTarefa(novaTarefa, widget.idDaLista);
+                  String nomeDaLista = widget.idDaLista;
+                  if (nomeDaLista != null && nomeDaLista.isNotEmpty) {
+                    Provider.of<TarefasData>(context, listen: false)
+                        .adicionarTarefa(novaTarefa, nomeDaLista);
+                  }
                   Navigator.pop(context);
                 }
               },

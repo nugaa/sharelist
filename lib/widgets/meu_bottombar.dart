@@ -2,13 +2,15 @@ import 'package:afazeres/widgets/dialog_nova_lista.dart';
 import 'package:flutter/material.dart';
 
 class Meu_BottomBar extends StatelessWidget {
+  Meu_BottomBar(this.cor);
+  Color cor;
   @override
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.lightBlueAccent,
+          color: cor,
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(30.0),
             topLeft: Radius.circular(30.0),

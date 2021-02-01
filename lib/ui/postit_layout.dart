@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:afazeres/servicos/conexao_bloc.dart';
 import 'package:afazeres/servicos/firebase_firestore_servico.dart';
 import 'package:afazeres/widgets/dialog_nova_lista.dart';
-import 'package:afazeres/widgets/mostrarAvisoWidget.dart';
+import 'package:afazeres/widgets/waitNoticeWidget.dart';
 import 'package:flutter/material.dart';
 
 class PostIt_Layout extends StatefulWidget {
@@ -54,7 +54,9 @@ class _PostIt_LayoutState extends State<PostIt_Layout> {
       body: SafeArea(
         child: isOff == false
             ? FirebaseFirestoreServico().streamNomeLista()
-            : SafeArea(child: waitConnWidget(context)),
+            : SafeArea(
+                child: waitNoticeWidget(
+                    context, 'A aguardar ligação à internet...')),
       ),
     );
   }
