@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:afazeres/servicos/conexao_bloc.dart';
-import 'package:afazeres/servicos/firebase_firestore_servico.dart';
-import 'package:afazeres/ui/add_tarefa.dart';
+import 'package:afazeres/servicos/firestore_listas.dart';
+import 'package:afazeres/widgets/add_tarefa.dart';
 import 'package:afazeres/widgets/dialog_remover_lista.dart';
 import 'package:afazeres/widgets/meu_bottombar.dart';
 import 'package:afazeres/widgets/waitNoticeWidget.dart';
@@ -16,6 +16,7 @@ class TarefasLayout extends StatefulWidget {
 class _TarefasLayoutState extends State<TarefasLayout> {
   StreamSubscription _conexaoAlteradaStream;
   bool isOff = false;
+  FirestoreListas _firestoreListas = FirestoreListas();
 
   @override
   void initState() {
@@ -38,14 +39,13 @@ class _TarefasLayoutState extends State<TarefasLayout> {
   }
 
   Widget build(BuildContext context) {
-    final Map nomePassado = ModalRoute.of(context).settings.arguments as Map;
-    print(ModalRoute.of(context).settings.arguments);
+    final Map dadosPassar = ModalRoute.of(context).settings.arguments as Map;
     return isOff == false
         ? Scaffold(
-            backgroundColor: nomePassado['cor'],
+            backgroundColor: dadosPassar['cor'],
             floatingActionButton: FloatingActionButton(
               tooltip: 'Adicionar nova tarefa',
-              backgroundColor: nomePassado['cor'].withOpacity(0.7),
+              backgroundColor: dadosPassar['cor'].withOpacity(0.7),
               child: Icon(
                 Icons.add,
                 size: 40.0,
@@ -58,13 +58,23 @@ class _TarefasLayoutState extends State<TarefasLayout> {
                     child: Container(
                       padding: EdgeInsets.only(
                           bottom: MediaQuery.of(context).viewInsets.bottom),
-                      child: AddTarefa(nomePassado['nome']),
+                      child: AddTarefa(
+                        dadosPassar['email'],
+                        dadosPassar['nome'],
+                        dadosPassar['cor'],
+                        dadosPassar['isShared'],
+                      ),
                     ),
                   ),
                 );
               },
             ),
-            bottomNavigationBar: Meu_BottomBar(nomePassado['cor']),
+            bottomNavigationBar: Meu_BottomBar(
+              cor: dadosPassar['cor'],
+              email: dadosPassar['email'],
+              nomeLista: dadosPassar['nome'],
+              isShared: dadosPassar['isShared'],
+            ),
             body: SafeArea(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -84,7 +94,7 @@ class _TarefasLayoutState extends State<TarefasLayout> {
                             backgroundColor: Colors.white,
                             child: Icon(
                               Icons.list,
-                              color: nomePassado['cor'],
+                              color: dadosPassar['cor'],
                               size: 45.0,
                             ),
                           ),
@@ -97,7 +107,7 @@ class _TarefasLayoutState extends State<TarefasLayout> {
                               Padding(
                                 padding: const EdgeInsets.only(top: 16.0),
                                 child: Text(
-                                  nomePassado['nome'],
+                                  dadosPassar['nome'],
                                   style: TextStyle(
                                     fontSize: 30.0,
                                     color: Colors.white,
@@ -108,6 +118,8 @@ class _TarefasLayoutState extends State<TarefasLayout> {
                               Padding(
                                 padding: const EdgeInsets.only(right: 24.0),
                                 child: IconButton(
+                                  tooltip:
+                                      'Apagar lista ${dadosPassar['nome']}',
                                   iconSize: 30.0,
                                   icon: Icon(
                                     Icons.delete_forever,
@@ -117,8 +129,10 @@ class _TarefasLayoutState extends State<TarefasLayout> {
                                     bool result =
                                         await mostrarDialogRemoverLista(
                                             context,
-                                            nomePassado['nome'],
-                                            nomePassado['cor']);
+                                            dadosPassar['email'],
+                                            dadosPassar['nome'],
+                                            dadosPassar['cor'],
+                                            dadosPassar['isShared']);
                                     if (result == true) {
                                       Navigator.pop(context);
                                     }
@@ -144,8 +158,10 @@ class _TarefasLayoutState extends State<TarefasLayout> {
                         ),
                       ),
                       child: FutureBuilder(
-                          future: FirebaseFirestoreServico()
-                              .obterIdLista(nomePassado['nome']),
+                          future: FirestoreListas().obterIdLista(
+                              dadosPassar['email'],
+                              dadosPassar['nome'],
+                              dadosPassar['isShared']),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
                               Center(
@@ -157,8 +173,21 @@ class _TarefasLayoutState extends State<TarefasLayout> {
                                 ),
                               ));
                             }
-                            return FirebaseFirestoreServico()
-                                .streamBuilderTarefas(snapshot.data);
+                            return ListView(
+                              children: [
+                                SizedBox(height: 25.0),
+                                dadosPassar['isShared'] == false
+                                    ? FirestoreListas().streamBuilderTarefas(
+                                        dadosPassar['email'],
+                                        snapshot.data,
+                                        dadosPassar['isShared'])
+                                    : FirestoreListas().streamBuilderTarefas(
+                                        dadosPassar['email'],
+                                        snapshot.data,
+                                        dadosPassar['isShared'],
+                                      ),
+                              ],
+                            );
                           }),
                     ),
                   )
@@ -168,7 +197,8 @@ class _TarefasLayoutState extends State<TarefasLayout> {
           )
         : Scaffold(
             backgroundColor: Colors.blueGrey[300],
-            body: waitNoticeWidget(context, 'A aguardar ligação à internet...'),
+            body:
+                waitInternetWidget(context, 'A aguardar ligação à internet...'),
           );
   }
 }

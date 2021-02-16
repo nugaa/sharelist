@@ -4,8 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class AddTarefa extends StatefulWidget {
-  AddTarefa(this.idDaLista);
+  AddTarefa(this.email, this.idDaLista, this.cor, this.isShared);
   final String idDaLista;
+  final Color cor;
+  final String email;
+  final bool isShared;
   @override
   _AddTarefaState createState() => _AddTarefaState();
 }
@@ -13,7 +16,6 @@ class AddTarefa extends StatefulWidget {
 class _AddTarefaState extends State<AddTarefa> {
   String novaTarefa;
   String id;
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -38,7 +40,7 @@ class _AddTarefaState extends State<AddTarefa> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 35.0,
-                color: Colors.lightBlueAccent,
+                color: widget.cor,
               ),
             ),
             TextField(
@@ -46,6 +48,7 @@ class _AddTarefaState extends State<AddTarefa> {
               textInputAction: TextInputAction.done,
               textAlign: TextAlign.center,
               decoration: InputDecoration(
+                focusColor: widget.cor,
                 hintText: 'Insira aqui...',
               ),
               onSubmitted: (texto) async {
@@ -54,11 +57,18 @@ class _AddTarefaState extends State<AddTarefa> {
                     novaTarefa != "" ||
                     novaTarefa.trim().length > 2) {
                   String nomeDaLista = widget.idDaLista;
-                  if (nomeDaLista != null && nomeDaLista.isNotEmpty) {
-                    Provider.of<TarefasData>(context, listen: false)
-                        .adicionarTarefa(novaTarefa, nomeDaLista);
+                  if (nomeDaLista != null &&
+                      nomeDaLista.isNotEmpty &&
+                      novaTarefa.isNotEmpty) {
+                    widget.isShared == false
+                        ? Provider.of<TarefasData>(context, listen: false)
+                            .adicionarTarefa(widget.email, novaTarefa,
+                                nomeDaLista, widget.isShared)
+                        : Provider.of<TarefasData>(context, listen: false)
+                            .adicionarTarefa(widget.email, novaTarefa,
+                                nomeDaLista, widget.isShared);
+                    Navigator.pop(context);
                   }
-                  Navigator.pop(context);
                 }
               },
             ),

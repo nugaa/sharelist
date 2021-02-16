@@ -2,7 +2,8 @@ import 'package:afazeres/models/tarefas_data.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-mostrarDialogRemoverLista(BuildContext context, String nomeDaLista, Color cor) {
+mostrarDialogRemoverLista(BuildContext context, String email,
+    String nomeDaLista, Color cor, bool isShared) {
   return showDialog(
       context: context,
       builder: (context) {
@@ -70,15 +71,24 @@ mostrarDialogRemoverLista(BuildContext context, String nomeDaLista, Color cor) {
                                 color: cor,
                                 onPressed: () async {
                                   String id;
-                                  id = await Provider.of<TarefasData>(context,
-                                          listen: false)
-                                      .idDaLista(nomeDaLista);
-                                  id.isNotEmpty
-                                      ? Provider.of<TarefasData>(context,
+                                  if (!isShared) {
+                                    id = await Provider.of<TarefasData>(context,
+                                            listen: false)
+                                        .idDaLista(
+                                            email, nomeDaLista, isShared);
+                                    if (id.isNotEmpty) {
+                                      Provider.of<TarefasData>(context,
                                               listen: false)
-                                          .removerLista(id)
-                                      : print('null');
-                                  Navigator.pop(context, true);
+                                          .removerLista(email, id, isShared);
+                                      Navigator.pop(context, true);
+                                    }
+                                  } else {
+                                    Provider.of<TarefasData>(context,
+                                            listen: false)
+                                        .removerLista(
+                                            email, nomeDaLista, isShared);
+                                    Navigator.pop(context, true);
+                                  }
                                 },
                                 child: Text(
                                   'Sim',

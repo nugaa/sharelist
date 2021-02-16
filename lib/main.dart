@@ -1,4 +1,5 @@
 import 'package:afazeres/servicos/conexao_bloc.dart';
+import 'package:afazeres/ui/login_layout.dart';
 import 'package:afazeres/ui/postit_layout.dart';
 import 'package:afazeres/ui/tarefas_layout.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -28,8 +29,9 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         initialRoute: '/',
         routes: {
-          '/': (context) => PostIt_Layout(),
-          '/first': (context) => TarefasLayout(),
+          '/': (context) => LoginLayout(),
+          '/postit': (context) => PostIt_Layout(),
+          '/tarefas': (context) => TarefasLayout(),
         },
       ),
     );

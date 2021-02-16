@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget waitNoticeWidget(BuildContext context, String aviso) {
+Widget waitInternetWidget(BuildContext context, String aviso) {
   return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
     Center(
       child: Container(

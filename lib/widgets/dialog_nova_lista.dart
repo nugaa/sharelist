@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 
 import 'colorWidgetPicker.dart';
 
-mostrarDialogNovaLista(BuildContext ctx) {
+mostrarDialogNovaLista(BuildContext ctx, String email, bool isShared) {
   String nomeLista;
 
   return showDialog(
@@ -20,7 +20,7 @@ mostrarDialogNovaLista(BuildContext ctx) {
                   Container(
                     width: MediaQuery.of(context).size.width / 1.5,
                     decoration: BoxDecoration(
-                      color: Colors.lightBlueAccent,
+                      color: Colors.blueGrey[400],
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20.0),
                         topRight: Radius.circular(20.0),
@@ -62,7 +62,7 @@ mostrarDialogNovaLista(BuildContext ctx) {
                                     fontSize: 18.0,
                                   )),
                               onChanged: (value) {
-                                nomeLista = value;
+                                nomeLista = value.trim();
                               },
                             ),
                             SizedBox(
@@ -82,7 +82,7 @@ mostrarDialogNovaLista(BuildContext ctx) {
                                 SizedBox(
                                   height: 10.0,
                                 ),
-                                mostrarCoresPicker(context, nomeLista),
+                                mostrarCoresPicker(context, nomeLista, email),
                                 SizedBox(
                                   height: 10.0,
                                 ),
