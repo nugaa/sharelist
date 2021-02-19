@@ -42,30 +42,14 @@ class PostItInfoWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  child: Stack(
-                    children: [
-                      Text(
-                        nomeDaLista,
-                        style: TextStyle(
-                          fontSize: 24.0,
-                          letterSpacing: 1.5,
-                          fontWeight: FontWeight.bold,
-                          foreground: Paint()
-                            ..style = PaintingStyle.stroke
-                            ..strokeWidth = 3
-                            ..color = Colors.black45,
-                        ),
-                      ),
-                      Text(
-                        nomeDaLista,
-                        style: TextStyle(
-                          letterSpacing: 1.5,
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.bold,
-                          color: backgroundColor.withOpacity(0.6),
-                        ),
-                      ),
-                    ],
+                  child: Text(
+                    nomeDaLista,
+                    style: TextStyle(
+                      letterSpacing: 1.5,
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ],

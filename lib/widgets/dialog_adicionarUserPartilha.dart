@@ -7,7 +7,8 @@ mostrarDialogAdicionarUserPartilha(
     String meuEmail,
     String nomeLista,
     Color cor,
-    bool check}) {
+    bool check,
+    bool isShared}) {
   FirestoreListas _firestoreListas = FirestoreListas();
   String outroEmail;
   return showDialog(
@@ -113,7 +114,7 @@ mostrarDialogAdicionarUserPartilha(
                                           message: 'Introduza um email válido.',
                                         ).show(context);
                                       }
-                                    } else {
+                                    } else if (!isShared) {
                                       return Flushbar(
                                               duration: Duration(seconds: 5),
                                               backgroundColor: Colors.redAccent,
@@ -121,6 +122,14 @@ mostrarDialogAdicionarUserPartilha(
                                               message:
                                                   'Não foi possível partilhar esta lista.\n'
                                                   'Já se encontra numa lista partilhada com o nome $nomeLista.')
+                                          .show(context);
+                                    } else if (isShared) {
+                                      return Flushbar(
+                                              duration: Duration(seconds: 5),
+                                              backgroundColor: Colors.redAccent,
+                                              title: 'Aviso!',
+                                              message:
+                                                  'O utilizador que introduziu já se encontra na lista.')
                                           .show(context);
                                     }
                                   },

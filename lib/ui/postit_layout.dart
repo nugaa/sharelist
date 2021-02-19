@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:afazeres/servicos/autenticacao_bloc.dart';
 import 'package:afazeres/servicos/conexao_bloc.dart';
 import 'package:afazeres/servicos/firestore_listas.dart';

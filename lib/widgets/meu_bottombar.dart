@@ -91,7 +91,8 @@ Row rowPessoal(
               meuEmail: email,
               nomeLista: nomeLista,
               cor: cor,
-              check: false);
+              check: false,
+              isShared: isShared);
 
           if (result == true) {
             String id;
@@ -155,7 +156,8 @@ Row rowPartilha(
               meuEmail: email,
               nomeLista: nomeLista,
               cor: cor,
-              check: true);
+              check: true,
+              isShared: isShared);
 
           if (result == true) {
           } else {

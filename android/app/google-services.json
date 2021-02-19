@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "763737792077-osnl4ej3m963632fjc8gluc2q44cqfm3.apps.googleusercontent.com",
+          "client_id": "763737792077-8d392pbc8n0a51mbfbgotducl2b4p8fe.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ricardonuga.afazeres",
-            "certificate_hash": "a1ccf18a8e952d8d9e42ae2307ff8c74d41e4f8e"
+            "certificate_hash": "bbb64e829847eb85791c985edc9056f6637155aa"
           }
         },
         {

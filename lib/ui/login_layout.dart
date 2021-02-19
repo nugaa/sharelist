@@ -12,7 +12,11 @@ class LoginLayout extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.bottomCenter,
             end: Alignment.topCenter,
-            colors: [Colors.blueGrey, Colors.blueGrey[200]],
+            colors: [
+              Colors.blueGrey[700],
+              Colors.blueGrey[500],
+              Colors.blueGrey[200],
+            ],
           ),
         ),
         child: SafeArea(
@@ -56,8 +60,16 @@ class LoginLayout extends StatelessWidget {
                       width: 40.0,
                     ),
                     InkWell(
-                      onTap: () {
-                        //TODO: facebook login
+                      onTap: () async {
+                        result = await _authBloc.obterDadosFacebook();
+                        if (result != null) {
+                          Navigator.of(context)
+                              .pushNamed('/postit', arguments: {
+                            'user': result['name'],
+                            'foto': result['picture']['data']['url'],
+                            'email': result['email']
+                          });
+                        }
                       },
                       child: Image.asset(
                         'images/f_Logo_(with_gradient).png',

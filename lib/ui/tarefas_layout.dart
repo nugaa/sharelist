@@ -16,7 +16,6 @@ class TarefasLayout extends StatefulWidget {
 class _TarefasLayoutState extends State<TarefasLayout> {
   StreamSubscription _conexaoAlteradaStream;
   bool isOff = false;
-  FirestoreListas _firestoreListas = FirestoreListas();
 
   @override
   void initState() {
@@ -126,7 +125,7 @@ class _TarefasLayoutState extends State<TarefasLayout> {
                                     color: Colors.white,
                                   ),
                                   onPressed: () async {
-                                    bool result =
+                                    var result =
                                         await mostrarDialogRemoverLista(
                                             context,
                                             dadosPassar['email'],
@@ -135,6 +134,8 @@ class _TarefasLayoutState extends State<TarefasLayout> {
                                             dadosPassar['isShared']);
                                     if (result == true) {
                                       Navigator.pop(context);
+                                    } else if (result == 'not admin') {
+                                      print(result);
                                     }
                                   },
                                 ),
@@ -173,7 +174,7 @@ class _TarefasLayoutState extends State<TarefasLayout> {
                                 ),
                               ));
                             }
-                            return ListView(
+                            return Column(
                               children: [
                                 SizedBox(height: 25.0),
                                 dadosPassar['isShared'] == false

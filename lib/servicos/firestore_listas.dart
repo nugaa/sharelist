@@ -207,39 +207,42 @@ class FirestoreListas {
                 checkados.add(item['isChecked']);
                 itemsWidgets.add(itemWidget);
               }
-              return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: itemsWidgets.length,
-                  itemBuilder: (context, index) {
-                    return Dismissible(
-                      key: Key(itemsLista[index]),
-                      background: Container(
-                        color: Colors.redAccent,
-                      ),
-                      onDismissed: (direcao) {
-                        removerItemDaLista(
-                            email, idDoc, itemsLista[index], isShared);
-                      },
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                          child: ListCheckboxTile(
-                            nomeTarefa: itemsLista[index],
-                            isChecked: checkados[index],
-                            toggleIt: (bool checkboxState) {
-                              Provider.of<TarefasData>(context, listen: false)
-                                  .checkboxToggle(
-                                      email,
-                                      idDoc,
-                                      itemsLista[index],
-                                      checkboxState,
-                                      isShared);
-                            },
+              return Flexible(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: itemsWidgets.length,
+                    itemBuilder: (context, index) {
+                      return Dismissible(
+                        key: Key(itemsLista[index]),
+                        background: Container(
+                          color: Colors.redAccent,
+                        ),
+                        onDismissed: (direcao) {
+                          removerItemDaLista(
+                              email, idDoc, itemsLista[index], isShared);
+                        },
+                        child: Center(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 6.0),
+                            child: ListCheckboxTile(
+                              nomeTarefa: itemsLista[index],
+                              isChecked: checkados[index],
+                              toggleIt: (bool checkboxState) {
+                                Provider.of<TarefasData>(context, listen: false)
+                                    .checkboxToggle(
+                                        email,
+                                        idDoc,
+                                        itemsLista[index],
+                                        checkboxState,
+                                        isShared);
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  });
+                      );
+                    }),
+              );
             },
           )
         : StreamBuilder<QuerySnapshot>(
@@ -265,39 +268,42 @@ class FirestoreListas {
                 checkados.add(item['isChecked']);
                 itemsWidgets.add(itemWidget);
               }
-              return ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: itemsWidgets.length,
-                  itemBuilder: (context, index) {
-                    return Dismissible(
-                      key: Key(itemsLista[index]),
-                      background: Container(
-                        color: Colors.redAccent,
-                      ),
-                      onDismissed: (direcao) {
-                        removerItemDaLista(
-                            email, idDoc, itemsLista[index], isShared);
-                      },
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                          child: ListCheckboxTile(
-                            nomeTarefa: itemsLista[index],
-                            isChecked: checkados[index],
-                            toggleIt: (bool checkboxState) {
-                              Provider.of<TarefasData>(context, listen: false)
-                                  .checkboxToggle(
-                                      email,
-                                      idDoc,
-                                      itemsLista[index],
-                                      checkboxState,
-                                      isShared);
-                            },
+              return Flexible(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: itemsWidgets.length,
+                    itemBuilder: (context, index) {
+                      return Dismissible(
+                        key: Key(itemsLista[index]),
+                        background: Container(
+                          color: Colors.redAccent,
+                        ),
+                        onDismissed: (direcao) {
+                          removerItemDaLista(
+                              email, idDoc, itemsLista[index], isShared);
+                        },
+                        child: Center(
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 6.0),
+                            child: ListCheckboxTile(
+                              nomeTarefa: itemsLista[index],
+                              isChecked: checkados[index],
+                              toggleIt: (bool checkboxState) {
+                                Provider.of<TarefasData>(context, listen: false)
+                                    .checkboxToggle(
+                                        email,
+                                        idDoc,
+                                        itemsLista[index],
+                                        checkboxState,
+                                        isShared);
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  });
+                      );
+                    }),
+              );
             },
           );
   }
@@ -401,6 +407,8 @@ class FirestoreListas {
               .doc(nomeDaLista)
               .delete()
               .then((value) => print('Lista apagada'));
+        } else {
+          return 'not admin';
         }
       }
     }
@@ -542,23 +550,28 @@ class FirestoreListas {
     final doc =
         await _listaPartilhada.where('nome', isEqualTo: nomeLista).get();
 
-    for (var i in doc.docs) {
-      listaEmails = (i.data()['partilha']);
-      listaNomeDados = i.data()['nome'];
-    }
-    if (listaEmails.contains(email) &&
-        listaEmails.contains(outroEmail) &&
-        listaNomeDados == nomeLista) {
-      print('Não partilhar');
-      return permitirPartilha;
-    } else {
-      if (partilhar == false) {
+    if (doc.docs.isNotEmpty) {
+      for (var i in doc.docs) {
+        listaEmails = (i.data()['partilha']);
+        listaNomeDados = i.data()['nome'];
+      }
+      if (listaEmails.contains(email) &&
+          listaEmails.contains(outroEmail) &&
+          listaNomeDados == nomeLista) {
+        print('Não partilhar');
         return permitirPartilha;
       } else {
-        permitirPartilha = true;
-        print('Partilhar');
-        return permitirPartilha;
+        if (partilhar == false) {
+          return permitirPartilha;
+        } else {
+          permitirPartilha = true;
+          print('Partilhar');
+          return permitirPartilha;
+        }
       }
+    } else {
+      permitirPartilha = true;
+      return permitirPartilha;
     }
   }
 }

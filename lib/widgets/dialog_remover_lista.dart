@@ -1,4 +1,5 @@
 import 'package:afazeres/models/tarefas_data.dart';
+import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -83,11 +84,22 @@ mostrarDialogRemoverLista(BuildContext context, String email,
                                       Navigator.pop(context, true);
                                     }
                                   } else {
-                                    Provider.of<TarefasData>(context,
+                                    var result = await Provider.of<TarefasData>(
+                                            context,
                                             listen: false)
                                         .removerLista(
                                             email, nomeDaLista, isShared);
-                                    Navigator.pop(context, true);
+                                    if (result == 'not admin') {
+                                      Flushbar(
+                                        backgroundColor: Colors.redAccent,
+                                        title: 'Aviso!',
+                                        message:
+                                            'Só o administrador pode apagar a lista.',
+                                        duration: Duration(seconds: 3),
+                                      ).show(context);
+                                    } else {
+                                      Navigator.pop(context, true);
+                                    }
                                   }
                                 },
                                 child: Text(

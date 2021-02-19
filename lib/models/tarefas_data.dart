@@ -22,9 +22,11 @@ class TarefasData extends ChangeNotifier {
         .then((value) => print('Lista Adicionada'));
   }
 
-  void removerLista(String email, String nomeLista, bool isShared) async {
-    await FirestoreListas().removerLista(email, nomeLista, isShared);
+  removerLista(String email, String nomeLista, bool isShared) async {
+    var result =
+        await FirestoreListas().removerLista(email, nomeLista, isShared);
     notifyListeners();
+    return result;
   }
 
   void adicionarTarefa(
